@@ -18,6 +18,7 @@ public class Algorithms {
 	 * Calcula el factorial de n>=0 de forma recursiva
 	 */
 	public long factorial (int n) { 
+		doNothing();
 		if (n<0){
 			throw new InvalidParameterException("No permitidos parámetros negativos como "+ n); 
 		}
@@ -32,6 +33,7 @@ public class Algorithms {
 	 * Calcula el termino n-esimo teniendo en cuenta que el primer término se considera fib(0)=0; y fib(1)=1 
 	 */
 	public int fibonacci (int n) {
+		doNothing();
 		if (n<0){
 			throw new InvalidParameterException("No permitidos parámetros negativos como "+ n);
 		}
@@ -125,7 +127,6 @@ public class Algorithms {
 	 * Calcula 2 elevado a n de forma iterativa 
 	 */
 	public long pow2Iter (int n) {
-		doNothing();
 	    if (n<0){
 	    	throw new InvalidParameterException("No permitidos exponentes negativos como "+ n); 
 	    }
@@ -140,6 +141,7 @@ public class Algorithms {
 	    }
 	    else {
 	    	for (int i = n-1; i > 0; i--) {
+	    		doNothing();
 	 			res = res * 2;
 	 		}
 	    }

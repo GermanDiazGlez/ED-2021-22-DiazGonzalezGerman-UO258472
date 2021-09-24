@@ -23,7 +23,7 @@ public class AlgorithmsBenchmarkTest {
 //		AlgorithmsBenchmark ab = new AlgorithmsBenchmark();
 //		ab.testFinal("pow2Iter.txt", 0, 100, 5, "p1Algoritmia.Algorithms", "pow2Iter");
 //	}
-//	
+	
 //	@Test
 //	public void testLinearBenchmark() {
 //		AlgorithmsBenchmark ab = new AlgorithmsBenchmark();
@@ -54,11 +54,11 @@ public class AlgorithmsBenchmarkTest {
 //		ab.testFinal("pow2Rec1.txt", 0, 100, 5, "p1Algoritmia.Algorithms", "pow2Rec1");
 //	}
 	
-	@Test
-	public void testPow2Rec2Benchmark() {
-		AlgorithmsBenchmark ab = new AlgorithmsBenchmark();
-		ab.testFinal("pow2Rec2.txt", 0, 15, 5, "p1Algoritmia.Algorithms", "pow2Rec2");
-	}
+//	@Test
+//	public void testPow2Rec2Benchmark() {
+//		AlgorithmsBenchmark ab = new AlgorithmsBenchmark();
+//		ab.testFinal("pow2Rec2.txt", 0, 15, 5, "p1Algoritmia.Algorithms", "pow2Rec2");
+//	}
 	
 //	@Test
 //	public void testPow2Rec3Benchmark() {
@@ -71,5 +71,23 @@ public class AlgorithmsBenchmarkTest {
 //		AlgorithmsBenchmark ab = new AlgorithmsBenchmark();
 //		ab.testFinal("pow2Rec4.txt", 0, 100, 5, "p1Algoritmia.Algorithms", "pow2Rec4");
 //	}
+	
+//	@Test
+//	public void testPow2Rec4Benchmark() {
+//		AlgorithmsBenchmark ab = new AlgorithmsBenchmark();
+//		ab.testFinal("factorial.txt", 0, 100, 5, "p1Algoritmia.Algorithms", "factorial");
+//	}
+	
+//	@Test
+//	public void testPow2Rec4Benchmark() {
+//		AlgorithmsBenchmark ab = new AlgorithmsBenchmark();
+//		ab.testFinal("fibonacci.txt", 0, 20, 5, "p1Algoritmia.Algorithms", "fibonacci");
+//	}
+	
+	@Test
+	public void testPow2Rec4Benchmark() {
+		AlgorithmsBenchmark ab = new AlgorithmsBenchmark();
+		ab.testFinal("potenciaRec.txt", 0, 100, 5, "p1Algoritmia.Algorithms", "potenciaRec");
+	}
 }
 
