@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"p2Grafos"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"evalNestor"},{"l":"p1Algoritmia"},{"l":"p2Grafos"}];updateSearchResults();
