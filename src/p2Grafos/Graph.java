@@ -201,8 +201,6 @@ public class Graph <T>{
     	return res;
     }  
     
-    
-    //
     /**
     * Borra el nodo deseado del vector de nodos así como las aristas de las que
     * forma parte, devolviendo 0 si lo hace y –1 si no lo hace
@@ -212,6 +210,11 @@ public class Graph <T>{
     	int nodePos = getNode(node);
     	if(nodePos != -1) {
     		T nodeFinal = nodes[numNodes-1];
+    		
+    		for(int i=0; i<numNodes; i++) {
+    			edges[i][nodePos] = false;
+    			edges[nodePos][i] = false;
+    		}
     		
     		for(int i=0; i<numNodes; i++) {
     			if(edges[i][numNodes-1] != false) {

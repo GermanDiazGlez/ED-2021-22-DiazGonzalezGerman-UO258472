@@ -17,6 +17,20 @@ public class GraphTest {
 		assertEquals(0, g.addNode(5));
 		assertEquals(-2, g.addNode(7));
 		assertEquals(-3, g.addNode(6));
+		//getNode
+		assertEquals(0, g.getNode(1));
+		assertEquals(1, g.getNode(3));
+		assertEquals(2, g.getNode(6));
+		assertEquals(3, g.getNode(5));
+		assertEquals(-1, g.getNode(0));
+		assertEquals(-1, g.getNode(7));
+		//existNode
+		assertEquals(true, g.existsNode(1));
+		assertEquals(true, g.existsNode(3));
+		assertEquals(true, g.existsNode(6));
+		assertEquals(true, g.existsNode(5));
+		assertEquals(false, g.existsNode(0));
+		assertEquals(false, g.existsNode(7));
 		//addEdge
 		assertEquals(0, g.addEdge(1, 3, 2));
 		assertEquals(0, g.addEdge(3, 6, 4));
@@ -52,10 +66,30 @@ public class GraphTest {
 		assertEquals(-4, g.removeEdge(1, 1));
 		assertEquals(-3, g.removeEdge(7, 7));
 		//removeNode
-		System.out.println(g.toString());
+		assertEquals(-1, g.removeNode(7));
+		assertEquals(0, g.addEdge(1, 3, 2));
+		assertEquals(0, g.addEdge(3, 6, 4));
 		assertEquals(0, g.removeNode(1));
 		assertEquals(-1, g.removeNode(1));
+		assertEquals(-1, g.removeNode(1));
+		assertEquals(-1, g.removeNode(52));
 		assertEquals(0, g.removeNode(6));
+		assertEquals(0, g.addNode(1));
+		assertEquals(0, g.addEdge(1, 3, 2));
+		assertEquals(0, g.removeNode(3));
+		assertEquals(0, g.addNode(3));
+		assertEquals(0, g.addEdge(1, 3, 2));
+		//Probamos a borrar el de la ultima posicion
+		assertEquals(0, g.removeNode(3));
+		assertEquals(0, g.addNode(3));
+		assertEquals(0, g.addEdge(1, 3, 2));
+		//Probamos a borrar el de la primera posicion
+		assertEquals(0, g.removeNode(5));
+		assertEquals(0, g.removeNode(3));
+		//Borramos cuando solo queda 1 nodo
+		assertEquals(0, g.removeNode(1));
+		//Borramos cuando no quedan nodos
+		assertEquals(-1, g.removeNode(0));
 	}
 
 }
