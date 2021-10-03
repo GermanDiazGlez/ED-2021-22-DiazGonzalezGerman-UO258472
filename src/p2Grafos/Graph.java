@@ -57,8 +57,7 @@ public class Graph <T>{
     }
     
     /**
-    * Obtiene el índice de un nodo en el vector de nodos, y –1 si no existe  
-    *
+    * Obtiene el índice de un nodo en el vector de nodos, y –1 si no existe
     * ¡¡¡ OJO que no es público porque depende de la implementación !!!
     */
     protected int getNode(T node) {
@@ -112,14 +111,13 @@ public class Graph <T>{
     	}
     	
     	if(sourcePos != -1 && targetPos != -1){
-    		
-        	
         	if(edges[sourcePos][targetPos] != false){
         		res += -4;
         	}
-        	
-        	edges[sourcePos][targetPos] = true;
-        	weights[sourcePos][targetPos] = edgeWeight;        	
+        	if(edgeWeight > 0.0) {
+	        	edges[sourcePos][targetPos] = true;
+	        	weights[sourcePos][targetPos] = edgeWeight;
+        	}
     	}
     	return res;
     }  
@@ -136,9 +134,11 @@ public class Graph <T>{
     	int sourcePos = getNode(source);
     	int targetPos = getNode(target);
     	
-    	if(edges[sourcePos][targetPos] == true){
-			return weights[sourcePos][targetPos];
-		}
+    	if(sourcePos != -1 && targetPos != -1){
+    		if(edges[sourcePos][targetPos] == true){
+    			return weights[sourcePos][targetPos];
+    		}
+    	}
     	
     	if(sourcePos == -1){
     		res += -1;
@@ -162,13 +162,77 @@ public class Graph <T>{
     public boolean existsEdge(T source, T target) {
     	int sourcePos = getNode(source);
     	int targetPos = getNode(target);
-		if(edges[sourcePos][targetPos] == true){
-			return true;
-		}
+    	if(sourcePos != -1 && targetPos != -1) {
+    		if(edges[sourcePos][targetPos] == true){
+    			return true;
+    		}
+    	}
     	return false;
     }
     
-    //En el removeNode cogemos el ultimo y lo ponemos en la pos del borrado.
+    /**
+    * Borra la arista del grafo que conecta dos nodos
+    * Se suman los valores de los errores si se dan varios simultaneamente
+    * Error 1: No existe nodo origen, valor –1,
+    * Error 2: No existe nodo destino, valor -2
+    * Error 3: No existe la arista pero sí los nodos origen y destino, valor –4
+    * devuelve 0 si la borra
+    */  
+    public int removeEdge(T source, T target) {
+    	int res = 0;
+    	int sourcePos = getNode(source);
+    	int targetPos = getNode(target);
+    	
+    	if(sourcePos != -1 && targetPos != -1){
+    		if(edges[sourcePos][targetPos] == true){
+    			edges[sourcePos][targetPos] = false;
+    		} else {
+    			res += -4;
+    		}
+    	}
+    	
+    	if(sourcePos == -1){
+    		res += -1;
+    	}
+    	
+    	if(targetPos == -1){
+    		res += -2;
+    	}		
+    	return res;
+    }  
+    
+    
+    //
+    /**
+    * Borra el nodo deseado del vector de nodos así como las aristas de las que
+    * forma parte, devolviendo 0 si lo hace y –1 si no lo hace
+    * En el removeNode cogemos el ultimo y lo ponemos en la posición del borrado.
+    */
+    public int removeNode(T node) {
+    	int nodePos = getNode(node);
+    	if(nodePos != -1) {
+    		T nodeFinal = nodes[numNodes-1];
+    		
+    		for(int i=0; i<numNodes; i++) {
+    			if(edges[i][numNodes-1] != false) {
+    				edges[i][nodePos] = true;
+    				weights[i][nodePos] = getEdge(nodes[i], nodeFinal);
+    				removeEdge(nodes[i], nodes[numNodes-1]);
+    			}
+    			if(edges[numNodes-1][i] != false) {
+    				edges[nodePos][i] = true;
+    				weights[nodePos][i] = getEdge(nodeFinal, nodes[i]);
+    				removeEdge(nodes[numNodes-1], nodes[i]);
+    			}
+    		}
+    		
+    		nodes[nodePos] = nodeFinal;
+    		numNodes--;
+    		
+    		return 0;
+    	}
+    	return -1;
+    }
     
     
     /**
