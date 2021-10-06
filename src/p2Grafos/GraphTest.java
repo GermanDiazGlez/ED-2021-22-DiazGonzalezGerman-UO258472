@@ -91,5 +91,32 @@ public class GraphTest {
 		//Borramos cuando no quedan nodos
 		assertEquals(-1, g.removeNode(0));
 	}
+	
+	//dijkstra desde todos los nodos, todos los grafos y todos los ejemplos que hay en teoria
+	@Test
+	public void testDijkstra() {
+		Graph<String> g = new Graph<>(4);
+		assertEquals(0,g.addNode("A"));
+		assertEquals(0,g.addNode("B"));
+		assertEquals(0,g.addNode("C"));
+		assertEquals(0,g.addNode("D"));
+		assertEquals(0,g.addEdge("A", "D", 1));
+		assertEquals(0,g.addEdge("A", "B", 4));
+		assertEquals(0,g.addEdge("B", "C", 1));
+		assertEquals(0,g.addEdge("D", "B", 2));
+		assertEquals(0,g.addEdge("D", "C", 4));
+		
+		double w[] = g.dijkstra("A");
+		
+		System.out.print("Dijkstra - Nodo A ->  [");
+		for (int i=0; i<w.length-1; i++) System.out.print(w[i]+",");
+		System.out.println(w[w.length-1]+"]");
+		
+		assertEquals(0,w[0], 0.01);
+		assertEquals(3,w[1], 0.01);
+		assertEquals(4,w[2], 0.01);
+		assertEquals(1,w[3], 0.01);
+		
+	}
 
 }

@@ -9,7 +9,42 @@ public class Graph <T>{
     protected double[][] weights; // matriz de pesos
     protected int numNodes; // número de elementos en un momento dado
     
+    
+    
+    protected boolean[] dijkstraS;
+    
+    //Vector D es el vector de costes minimos
+    //se inicializa con el tamaño numNodes al llamar al metodo de dijkstra 
+    //Para ir desde el nodo origen así mismo el coste es 0
+    protected double[] dijkstraD;
+    
+    //Vector P(path) es el vector de Rutas de coste minimo
+    //nodos intermedios por los que tengo que dar un salto, y sin no hay nodos intermedios no se pone nada
+    protected int[] dijkstraP; //se inicializa con el tamaño numNodes al llamar al metodo de dijkstra con -1 para que java no lo inicialice a 0
 
+    
+    
+//  debe estar incluido este constructor en la clase Graph 
+	public Graph (int tam, T initialNodes[], boolean[][] initialEdges, double [][] initialWeights) {
+		// Llama al constructor original
+		this(tam); 
+		
+		// Pero modifica los atributos con los parametros para hacer pruebas...
+		numNodes = initialNodes.length;
+		
+		for (int i=0;i<numNodes;i++) {
+			// Si el vector de nodos se llama de otra forma (distinto de "nodes"), cambiad el nombre en la linea de abajo
+			nodes[i]=initialNodes[i];
+			for (int j=0;j<numNodes;j++){
+				// Si la matriz de aristas se llama de otra forma (distinto de "edges"), cambiad el nombre en la linea de abajo
+				edges[i][j]=initialEdges[i][j];
+				// Si la matriz de pesos se llama de otra forma (distinto de "weights"), cambiad el nombre en la linea de abajo
+				weights[i][j]=initialWeights[i][j];
+			}
+		}
+
+	} 
+    
     /**   
     * Se le pasa el numero maximo de nodos del grafo   
     */
@@ -20,6 +55,7 @@ public class Graph <T>{
         nodes = (T[])new Object[tam]; 
         edges = new boolean[tam][tam];
         weights = new double[tam][tam];
+        
     }   
 
     /** 
@@ -271,5 +307,87 @@ public class Graph <T>{
          return cadena;  
     } 
     
-   
+    
+    
+    //--------------------DIJKSTRA------------------//
+    
+    /**
+    *  Algoritmo de Dijkstra para encontrar el camino de coste mínimo desde nodoOrigen
+    *  hasta el resto de nodos. Devuelve el vector D de Dijkstra
+    * Si no existe el nodoOrigen (o es inválido como parámetro) devuelve null
+    */
+    public double[] dijkstra(T nodoOrigen) {
+        dijkstraS = new boolean[numNodes];
+        
+        
+        initializeDijkstraD(nodoOrigen);
+        initializeDijkstraP(nodoOrigen);
+        
+        if(nodoOrigen == null || getNode(nodoOrigen) == -1){
+        	return null;
+        }
+        while(minCost(dijkstraD, dijkstraS) != -1){
+	        int minCostNodePos = minCost(dijkstraD, dijkstraS);
+	        dijkstraS[minCostNodePos] = true;
+	        
+	        for(int i=0; i<numNodes; i++){
+	        	if(!dijkstraS[i] && edges[minCostNodePos][i]){
+		        	if(dijkstraD[minCostNodePos] + weights[minCostNodePos][i] < dijkstraD[i]){
+		        		dijkstraD[i] = dijkstraD[minCostNodePos] + weights[minCostNodePos][i];
+		        		dijkstraP[i] = minCostNodePos;
+		        	}
+	        	}
+	        }
+        }        
+        return dijkstraD;
+    }
+    
+    /**
+    * Busca el nodo con distancia minima en D al resto de nodos, se le pasa el vector D de dijkstra y
+    * el conjunto de visitados (como un vector de booleanos) y devuelve el indice del nodo buscado
+    * Si hay varios con mismo coste devuelve el que tenga índica más bajo en el vector de nodos
+    * o -1 si el grafo es no conexo o no quedan nodos sin visitar
+    */
+    private int minCost(double[] vectorD, boolean[] visited) {
+    	double minCost = Double.POSITIVE_INFINITY;
+    	int nodePos = -1;
+    	for(int i=0; i<vectorD.length; i++){
+    		if(!visited[i]){
+    			if(vectorD[i] < minCost){
+    				minCost = vectorD[i];
+    				nodePos = i;
+    			}
+    		}
+    	}
+    	return nodePos;
+    }  
+    
+    private void initializeDijkstraD(T node) {
+		dijkstraD = new double[numNodes];
+		int nodePos = getNode(node);
+		for (int i = 0; i < numNodes; i++) {
+			if (nodePos == i) {
+				dijkstraD[i] = 0;
+			} else if (edges[nodePos][i]) {
+				dijkstraD[i] = new Double(weights[nodePos][i]);
+			} else {
+				dijkstraD[i] = Double.POSITIVE_INFINITY;
+			}
+		}
+	}
+	
+	/*
+	 * Inicializa dijkstraP
+	 */
+	private void initializeDijkstraP(T node) {
+		dijkstraP = new int[numNodes];
+		int nodePos = getNode(node);
+		for (int i = 0; i < numNodes; i++) {
+			if (edges[nodePos][i] || nodePos == i) {
+				dijkstraP[i] = nodePos;
+			} else {
+				dijkstraP[i] = -1;
+			}
+		}
+	}   
 }   
