@@ -84,8 +84,12 @@ public class Graph <T>{
     	
     	if(res == 0){
     		nodes[numNodes] = node;
-        	edges[numNodes][numNodes] = false;
-        	weights[numNodes][numNodes] = 0;
+    		for(int i=0; i< numNodes; i++) {
+    			edges[numNodes][i] = false;
+    			edges[i][numNodes] = false;
+            	weights[numNodes][i] = 0;
+            	weights[i][numNodes] = 0;
+    		}
         	numNodes++;
     	}
     	
@@ -97,10 +101,12 @@ public class Graph <T>{
     * ¡¡¡ OJO que no es público porque depende de la implementación !!!
     */
     protected int getNode(T node) {
-    	for(int i=0; i<numNodes; i++){
-    		if(node.equals(nodes[i])){
-    			return i;
-    		}
+    	if(node != null) {
+        	for(int i=0; i<numNodes; i++){
+        		if(node.equals(nodes[i])){
+        			return i;
+        		}
+        	}
     	}
     	return -1;
     }  
@@ -149,8 +155,7 @@ public class Graph <T>{
     	if(sourcePos != -1 && targetPos != -1){
         	if(edges[sourcePos][targetPos] != false){
         		res += -4;
-        	}
-        	if(edgeWeight > 0.0) {
+        	} else if(edgeWeight > 0.0) {
 	        	edges[sourcePos][targetPos] = true;
 	        	weights[sourcePos][targetPos] = edgeWeight;
         	}
@@ -245,29 +250,20 @@ public class Graph <T>{
     public int removeNode(T node) {
     	int nodePos = getNode(node);
     	if(nodePos != -1) {
-    		T nodeFinal = nodes[numNodes-1];
-    		
-    		for(int i=0; i<numNodes; i++) {
-    			edges[i][nodePos] = false;
-    			edges[nodePos][i] = false;
+    		if(nodePos == numNodes -1) {
+    			numNodes--;
+    			return 0;
     		}
-    		
-    		for(int i=0; i<numNodes; i++) {
-    			if(edges[i][numNodes-1] != false) {
-    				edges[i][nodePos] = true;
-    				weights[i][nodePos] = getEdge(nodes[i], nodeFinal);
-    				removeEdge(nodes[i], nodes[numNodes-1]);
-    			}
-    			if(edges[numNodes-1][i] != false) {
-    				edges[nodePos][i] = true;
-    				weights[nodePos][i] = getEdge(nodeFinal, nodes[i]);
-    				removeEdge(nodes[numNodes-1], nodes[i]);
-    			}
+    		nodes[nodePos] = nodes[numNodes -1];
+    		for(int i=0; i<numNodes;i++) {
+    			edges[i][nodePos] = edges[i][numNodes-1];
+    			edges[nodePos][i] = edges[numNodes-1][i];
+    			weights[i][nodePos] = weights[i][numNodes-1];
+    			weights[nodePos][i] = weights[numNodes-1][i];
     		}
-    		
-    		nodes[nodePos] = nodeFinal;
+    		edges[nodePos][nodePos] = edges[numNodes-1][numNodes-1];
+    		weights[nodePos][nodePos] = weights[numNodes-1][numNodes-1];
     		numNodes--;
-    		
     		return 0;
     	}
     	return -1;
@@ -362,7 +358,8 @@ public class Graph <T>{
     	return nodePos;
     }  
     
-    private void initializeDijkstraD(T node) {
+
+	private void initializeDijkstraD(T node) {
 		dijkstraD = new double[numNodes];
 		int nodePos = getNode(node);
 		for (int i = 0; i < numNodes; i++) {

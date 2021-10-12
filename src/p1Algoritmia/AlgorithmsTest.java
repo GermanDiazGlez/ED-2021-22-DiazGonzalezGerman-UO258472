@@ -3,7 +3,6 @@ package p1Algoritmia;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import p1Algoritmia.Algorithms;
 
 public class AlgorithmsTest {
 	

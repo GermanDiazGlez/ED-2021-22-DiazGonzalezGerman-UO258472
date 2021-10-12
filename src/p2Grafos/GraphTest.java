@@ -1,8 +1,9 @@
 package p2Grafos;
 
-import static org.junit.Assert.*;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class GraphTest {
 
@@ -32,29 +33,39 @@ public class GraphTest {
 		assertEquals(false, g.existsNode(0));
 		assertEquals(false, g.existsNode(7));
 		//addEdge
-		assertEquals(0, g.addEdge(1, 3, 2));
-		assertEquals(0, g.addEdge(3, 6, 4));
-		assertEquals(-1, g.addEdge(2, 3, 2));
-		assertEquals(-3, g.addEdge(2, 4, 2));
+		assertEquals(0, g.addEdge(1, 3, 2.0));
+		assertEquals(0, g.addEdge(3, 6, 4.5));
+		assertEquals(0, g.addEdge(1, 5, 11.11));
+		System.out.println(g.toString());
+		assertEquals(-1, g.addEdge(2, 3, 9.99));
+		assertEquals(-3, g.addEdge(2, 4, 6.66));
+		assertEquals(-12, g.addEdge(1, 3, -2));
 		assertEquals(-8, g.addEdge(1, 6, -2));
 		assertEquals(-9, g.addEdge(7, 3, -2));
 		assertEquals(-10, g.addEdge(1, 9, -2));
-		assertEquals(-12, g.addEdge(1, 3, -2));
+		assertEquals(-4, g.addEdge(1, 3, 7.77));
 		assertEquals(-11, g.addEdge(2, 4, -2));
+		
+
+		assertEquals(11.11, g.getEdge(1, 5));
+		
+		System.out.println(g.toString());
+		
+		
 		//existEdge
 		assertEquals(true, g.existsEdge(1, 3));
-		assertEquals(false, g.existsEdge(1, 5));
+		assertEquals(true, g.existsEdge(1, 5));
 		assertEquals(false, g.existsEdge(4, 5));
 		assertEquals(false, g.existsEdge(9, 24));
 		assertEquals(false, g.existsEdge(-9, 24));
 		//getEdge
-		assertEquals(2, g.getEdge(1, 3), 0.01);
-		assertEquals(4, g.getEdge(3, 6), 0.01);
-		assertEquals(-1, g.getEdge(4, 6), 0.01);
-		assertEquals(-2, g.getEdge(1, 4), 0.01);
-		assertEquals(-3, g.getEdge(4, 8), 0.01);
-		assertEquals(-4, g.getEdge(1, 6), 0.01);
-		assertEquals(-3, g.getEdge(2, 4), 0.01);
+		assertEquals(2.0, g.getEdge(1, 3));
+		assertEquals(4.5, g.getEdge(3, 6));
+		assertEquals(-1, g.getEdge(4, 6));
+		assertEquals(-2, g.getEdge(1, 4));
+		assertEquals(-3, g.getEdge(4, 8));
+		assertEquals(-4, g.getEdge(1, 6));
+		assertEquals(-3, g.getEdge(2, 4));
 		//removeEdge
 		assertEquals(0, g.removeEdge(1, 3));
 		assertEquals(-4, g.removeEdge(1, 3));
@@ -112,10 +123,10 @@ public class GraphTest {
 		for (int i=0; i<w.length-1; i++) System.out.print(w[i]+",");
 		System.out.println(w[w.length-1]+"]");
 		
-		assertEquals(0,w[0], 0.01);
-		assertEquals(3,w[1], 0.01);
-		assertEquals(4,w[2], 0.01);
-		assertEquals(1,w[3], 0.01);
+		assertEquals(0,w[0]);
+		assertEquals(3,w[1]);
+		assertEquals(4,w[2]);
+		assertEquals(1,w[3]);
 		
 	}
 
