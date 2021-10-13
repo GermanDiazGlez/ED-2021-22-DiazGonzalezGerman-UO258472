@@ -24,7 +24,7 @@ public class Graph <T>{
 
     
     
-//  debe estar incluido este constructor en la clase Graph 
+    //  debe estar incluido este constructor en la clase Graph 
 	public Graph (int tam, T initialNodes[], boolean[][] initialEdges, double [][] initialWeights) {
 		// Llama al constructor original
 		this(tam); 
@@ -313,15 +313,14 @@ public class Graph <T>{
     * Si no existe el nodoOrigen (o es inválido como parámetro) devuelve null
     */
     public double[] dijkstra(T nodoOrigen) {
-        dijkstraS = new boolean[numNodes];
-        
-        
+    	if(nodoOrigen == null || getNode(nodoOrigen) == -1){
+        	return null;
+        }
+    	
+        dijkstraS = new boolean[numNodes];        
         initializeDijkstraD(nodoOrigen);
         initializeDijkstraP(nodoOrigen);
         
-        if(nodoOrigen == null || getNode(nodoOrigen) == -1){
-        	return null;
-        }
         while(minCost(dijkstraD, dijkstraS) != -1){
 	        int minCostNodePos = minCost(dijkstraD, dijkstraS);
 	        dijkstraS[minCostNodePos] = true;
@@ -358,7 +357,9 @@ public class Graph <T>{
     	return nodePos;
     }  
     
-
+    /**
+     * Método que inicializa la matriz D de dijkstra
+     */
 	private void initializeDijkstraD(T node) {
 		dijkstraD = new double[numNodes];
 		int nodePos = getNode(node);
@@ -373,9 +374,9 @@ public class Graph <T>{
 		}
 	}
 	
-	/*
-	 * Inicializa dijkstraP
-	 */
+	/**
+     * Método que inicializa la matriz P de dijkstra
+     */
 	private void initializeDijkstraP(T node) {
 		dijkstraP = new int[numNodes];
 		int nodePos = getNode(node);
