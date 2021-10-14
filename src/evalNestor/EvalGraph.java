@@ -1,5 +1,5 @@
-//  NO MODIFICAR NOMBRE DE ESTE PAQUETE, crear (si no existe ya) un paquete nuevo en vuestro proyecto que se llame asÌ: "evalNestor"
-//  y meted en Èl esta clase
+//  NO MODIFICAR NOMBRE DE ESTE PAQUETE, crear (si no existe ya) un paquete nuevo en vuestro proyecto que se llame asi: "evalNestor"
+//  y meted en el esta clase
 package evalNestor;
 
 import p2Grafos.Graph;
@@ -16,14 +16,18 @@ public class EvalGraph<T> extends Graph<T> {
 		super(i,initialNodes,initialEdges,initialWeights);
 	}
 
+	// nuevo constructor en EvalGraph 
+    public EvalGraph(int i,T initialNodes[], boolean[][] initialEdges, double [][] initialWeights, double [][] initialAfloyd, int [][] initialPfloyd){ 
+        super(i,initialNodes,initialEdges,initialWeights,initialAfloyd,initialPfloyd); 
+    } 
+
 	public String getNombreFicheroAlumno(){
 		return alum.getNombreFicheroAlumno();
 	}
 }
 
 
-/*
-	//  debe estar incluido este constructor en la clase Graph 
+/*  //  deben estar incluidos estos constructores en la clase Graph 
 	public Graph (int tam, T initialNodes[], boolean[][] initialEdges, double [][] initialWeights) {
 		// Llama al constructor original
 		this(tam); 
@@ -43,4 +47,20 @@ public class EvalGraph<T> extends Graph<T> {
 		}
 
 	} 
+	
+	// Nuevo constructor en vuestro Graph, hay que mantener tambien los anteriores... 
+    public Graph (int tam, T initialNodes[], boolean[][] initialEdges, double [][] initialWeights, double [][] initialAfloyd, int [][] initialPfloyd) { 
+        // Llama al constructor anterior de inicializaci√≥n 
+        this(tam, initialNodes,initialEdges,initialWeights);  
+         
+        // Pero modifica los atributos que almacenan las matrices de Floyd con los par√°metros para hacer pruebas... 
+         
+        if (initialAfloyd!=null && initialPfloyd!=null){ 
+            // Si la matriz A de floyd se llama de otra forma (distinto de "aFloyd"), refactorizar para que se llame "aFloyd"
+            aFloyd=initialAfloyd; 
+            // Si la matriz P de floyd se llama de otra forma (distinto de "pFloyd"), refactorizar para que se llame "pFloyd"
+            pFloyd=initialPfloyd; 
+        } 
+  
+    } 
  */

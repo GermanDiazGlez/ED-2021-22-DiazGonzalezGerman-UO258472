@@ -1,6 +1,7 @@
 package p2Grafos;
 
 import java.text.DecimalFormat;
+import java.util.Iterator;
 
 public class Graph <T>{   
 
@@ -22,7 +23,26 @@ public class Graph <T>{
     //nodos intermedios por los que tengo que dar un salto, y sin no hay nodos intermedios no se pone nada
     protected int[] dijkstraP; //se inicializa con el tamaño numNodes al llamar al metodo de dijkstra con -1 para que java no lo inicialice a 0
 
+    //Matriz A de Floyd
+    protected double aFloyd[][]; 
+    //Matriz P de Floyd
+    protected int pFloyd[][]; 
     
+	// Nuevo constructor en vuestro Graph, hay que mantener tambien los anteriores... 
+    public Graph (int tam, T initialNodes[], boolean[][] initialEdges, double [][] initialWeights, double [][] initialAfloyd, int [][] initialPfloyd) { 
+        // Llama al constructor anterior de inicialización 
+        this(tam, initialNodes,initialEdges,initialWeights);  
+         
+        // Pero modifica los atributos que almacenan las matrices de Floyd con los parámetros para hacer pruebas... 
+         
+        if (initialAfloyd!=null && initialPfloyd!=null){ 
+            // Si la matriz A de floyd se llama de otra forma (distinto de "aFloyd"), refactorizar para que se llame "aFloyd"
+            aFloyd=initialAfloyd; 
+            // Si la matriz P de floyd se llama de otra forma (distinto de "pFloyd"), refactorizar para que se llame "pFloyd"
+            pFloyd=initialPfloyd; 
+        } 
+  
+    } 
     
     //  debe estar incluido este constructor en la clase Graph 
 	public Graph (int tam, T initialNodes[], boolean[][] initialEdges, double [][] initialWeights) {
@@ -91,6 +111,8 @@ public class Graph <T>{
             	weights[i][numNodes] = 0;
     		}
         	numNodes++;
+        	aFloyd = null;
+        	pFloyd = null;
     	}
     	
     	return res;
@@ -158,6 +180,8 @@ public class Graph <T>{
         	} else if(edgeWeight > 0.0) {
 	        	edges[sourcePos][targetPos] = true;
 	        	weights[sourcePos][targetPos] = edgeWeight;
+	        	aFloyd = null;
+	        	pFloyd = null;
         	}
     	}
     	return res;
@@ -227,6 +251,8 @@ public class Graph <T>{
     	if(sourcePos != -1 && targetPos != -1){
     		if(edges[sourcePos][targetPos] == true){
     			edges[sourcePos][targetPos] = false;
+            	aFloyd = null;
+            	pFloyd = null;
     		} else {
     			res += -4;
     		}
@@ -264,44 +290,47 @@ public class Graph <T>{
     		edges[nodePos][nodePos] = edges[numNodes-1][numNodes-1];
     		weights[nodePos][nodePos] = weights[numNodes-1][numNodes-1];
     		numNodes--;
+    		
+        	aFloyd = null;
+        	pFloyd = null;
     		return 0;
     	}
     	return -1;
     }
     
     
-    /**
-      * Devuelve un String con la informacion del grafo  
-      */
-    public String toString() {  
-         DecimalFormat df = new DecimalFormat("#.##");  
-         String cadena = "";
-         cadena += "NODES\n";
-
-         for (int i = 0; i < numNodes; i++) {  
-             cadena += nodes[i].toString() + "\t";  
-         }  
-         cadena += "\n\nEDGES\n";
-         
-         for (int i = 0; i < numNodes; i++) {  
-             for (int j = 0; j < numNodes; j++) {  
-                 if (edges[i][j])  
-                     cadena += "T\t";  
-                 else  
-                     cadena += "F\t";  
-             }  
-             cadena += "\n";  
-         }
-         cadena += "\nWEIGHTS\n";  
-
-         for (int i = 0; i < numNodes; i++) {  
-             for (int j = 0; j < numNodes; j++) {  
-                 cadena += (edges[i][j]?df.format(weights[i][j]):"-") + "\t";  
-             }
-             cadena += "\n";  
-         }  
-         return cadena;  
-    } 
+//    /**
+//      * Devuelve un String con la informacion del grafo  
+//      */
+//    public String toString() {  
+//         DecimalFormat df = new DecimalFormat("#.##");  
+//         String cadena = "";
+//         cadena += "NODES\n";
+//
+//         for (int i = 0; i < numNodes; i++) {  
+//             cadena += nodes[i].toString() + "\t";  
+//         }  
+//         cadena += "\n\nEDGES\n";
+//         
+//         for (int i = 0; i < numNodes; i++) {  
+//             for (int j = 0; j < numNodes; j++) {  
+//                 if (edges[i][j])  
+//                     cadena += "T\t";  
+//                 else  
+//                     cadena += "F\t";  
+//             }  
+//             cadena += "\n";  
+//         }
+//         cadena += "\nWEIGHTS\n";  
+//
+//         for (int i = 0; i < numNodes; i++) {  
+//             for (int j = 0; j < numNodes; j++) {  
+//                 cadena += (edges[i][j]?df.format(weights[i][j]):"-") + "\t";  
+//             }
+//             cadena += "\n";  
+//         }  
+//         return cadena;  
+//    } 
     
     
     
@@ -355,7 +384,7 @@ public class Graph <T>{
     		}
     	}
     	return nodePos;
-    }  
+    }
     
     /**
      * Método que inicializa la matriz D de dijkstra
@@ -388,4 +417,177 @@ public class Graph <T>{
 			}
 		}
 	}   
+	
+	
+	//-----------------------Floyd---------------------------\\
+	
+	
+	/**
+	* Aplica el algoritmo de Floyd al grafo y devuelve 0 si lo aplica y genera matrices A y P;
+	* y –1 si no lo hace
+	*/
+	public int floyd() {
+		if(numNodes == 0) {
+			return -1;
+		}
+
+		this.aFloyd = inicializarAFloyd();
+		this.pFloyd = inicializarPFloyd();
+		
+		for(int k=0; k<numNodes; k++) {
+			for(int i=0; i<numNodes; i++) {
+				for(int j=0; j<numNodes; j++) {
+					if(aFloyd[i][k] + aFloyd[k][j] < aFloyd[i][j]) {
+						aFloyd[i][j] = aFloyd[i][k] + aFloyd[k][j];
+						pFloyd[i][j] = k + 1;
+					}
+				}
+			}
+		}
+		//En todas las pos que no haya arista habrá un infinito
+		//En la diagonal principal habra 0
+		//Matriz P es la ruta que hay que seguir para obtener el coste minimo, se inicializa con guiones por ejemplo -1
+		return 0;
+	}  
+	
+	
+	private double[][] inicializarAFloyd() {
+		this.aFloyd = new double[numNodes][numNodes];
+		for(int i=0; i<numNodes; i++) {
+			for(int j=0; j<numNodes; j++) {
+				if(weights[i][j] != 0) {
+					this.aFloyd[i][j] = weights[i][j];
+				}
+				else if(i == j) {
+					this.aFloyd[i][j] = 0;
+				}
+				else {
+					this.aFloyd[i][j] = Double.POSITIVE_INFINITY;
+				}
+			}
+		}
+		
+		return aFloyd;
+	}
+	
+	
+	private int[][] inicializarPFloyd() {
+		this.pFloyd = new int[numNodes][numNodes];
+		for(int i=0; i<numNodes; i++) {
+			for(int j=0; j<numNodes; j++) {
+				this.pFloyd[i][j] = -1;
+			}
+		}
+		return pFloyd;
+	}
+	
+	
+	/**
+	* Devuelve la matriz A de Floyd, con infinito si no hay camino
+	* Si no se ha invocado a Floyd debe devolver null  (OJO que no lo invoca)
+	*/
+	protected double[][] getAFloyd() { 
+		if(aFloyd == null) {
+			return null;
+		}
+		return aFloyd;
+	} 
+	
+	
+	/**
+	* Devuelve la matriz P de Floyd, con -1 en las posiciones en las que no hay nodo intermedio
+	* Si no se ha invocado a Floyd debe devolver null  (OJO que no lo invoca)
+	*/
+	protected int[][] getPFloyd() {
+		if(pFloyd == null) {
+			return null;
+		}
+		return pFloyd;
+	}
+	
+	
+	/**
+	* Devuelve el coste del camino de coste mínimo entre origen y destino según Floyd
+	* Si no están generadas las matrices de Floyd, las genera.
+	* Si no puede obtener el valor por alguna razón, devuelve –1 (OJO que es distinto de infinito)
+	**/
+	public double minCostPath(T nodeInicial, T nodeFinal) {
+		if(pFloyd == null) {
+			inicializarPFloyd();
+		}
+		if(aFloyd == null) {
+			inicializarAFloyd();
+		}
+		int floyd = floyd();
+		int nodeInicialPos = getNode(nodeInicial);
+		int nodeFinalPos = getNode(nodeFinal);
+		if(floyd != 0 || nodeInicialPos == -1 || nodeFinalPos == -1) {
+			return -1;
+		}
+		double coste = 0.0;
+		coste = aFloyd[nodeInicialPos][nodeFinalPos];
+		return coste;
+	}
+	
+	//A partir de un nodo recorrer en profundidad hasta donde se llegue. 
+	//Empezando por el que se encuentra en posicion mas baja en el vector de nodos.
+	//Siempre que se haga un tostring de un nodo se mete un \t detras
+	
+	
+	/**
+    * Devuelve un String con la informacion del grafo (incluyendo matrices de Floyd)
+    * Si se ha usado para pruebas el toString anterior, sería conveniente renombrarlo antes (mediante refactorizacion)
+	* antes de sustituirlo por este, para que sigan pasando las pruebas anteriores sin problemas.
+    */
+    public String toString() {
+        DecimalFormat df = new DecimalFormat("#.##");  
+        String cadena = "";  
+   
+        cadena += "NODES\n";  
+        for (int i = 0; i < numNodes; i++) {  
+            cadena += nodes[i].toString() + "\t";  
+        }
+        cadena += "\n\nEDGES\n";  
+        for (int i = 0; i < numNodes; i++) {  
+            for (int j = 0; j < numNodes; j++) {  
+                if (edges[i][j])  
+                    cadena += "T\t";  
+                else  
+                    cadena += "F\t";  
+            }  
+            cadena += "\n";  
+        }  
+        cadena += "\nWEIGHTS\n";  
+        for (int i = 0; i < numNodes; i++) {  
+            for (int j = 0; j < numNodes; j++) {  
+                cadena += (edges[i][j]?df.format(weights[i][j]):"-") + "\t";  
+            }  
+            cadena += "\n";  
+        }
+
+        double[][] aFloyd = getAFloyd();  
+        if (aFloyd != null) {
+            cadena += "\nAFloyd\n";
+            for (int i = 0; i < numNodes; i++) {
+                for (int j = 0; j < numNodes; j++) {
+                    cadena += df.format(aFloyd[i][j]) + "\t";
+                }
+                cadena += "\n";  
+            }  
+        }  
+
+        int[][] pFloyd = getPFloyd();
+        if (pFloyd != null) {
+                cadena += "\nPFloyd\n";
+            for (int i = 0; i < numNodes; i++) {
+                for (int j = 0; j < numNodes; j++) {
+                    cadena += (pFloyd[i][j]>=0?df.format(pFloyd[i][j]):"-") + "\t";
+                }
+                cadena += "\n";
+            }
+        }
+        return cadena;
+    }
+    
+    
 }   
