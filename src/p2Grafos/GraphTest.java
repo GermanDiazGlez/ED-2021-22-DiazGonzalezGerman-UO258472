@@ -181,6 +181,72 @@ public class GraphTest {
 	
 	/**
 	 * GIVEN: 	Grafo vacío
+	 * WHEN:	Test de evolución básica de grafos
+	 * THEN: 	Las aristas y nodos añadidos correctamente están presentes en el grafo
+	 */
+	@Test
+	public void test4Grafos() {
+		Graph<Integer> g=new Graph<Integer>(3);
+		assertEquals(false, g.existsNode(1));
+		assertEquals(false, g.existsNode(2));
+		assertEquals(0, g.addNode(1));
+		assertEquals(0, g.addNode(2));
+		assertEquals(true, g.existsNode(1));
+		assertEquals(true, g.existsNode(2));
+		assertEquals(-1, g.addNode(1));
+		assertEquals(-1, g.addNode(2));
+		assertEquals(0, g.addEdge(1,2, 1.2));
+		assertEquals(0, g.addEdge(2,1, 2.1));
+		assertEquals(0, g.addEdge(1,1, 1.1));
+		assertEquals(1.2, g.getEdge(1,2));
+		assertEquals(2.1, g.getEdge(2,1));
+		assertEquals(1.1, g.getEdge(1,1));
+		assertEquals(-2, g.getEdge(2,3));
+		assertEquals(true, g.existsEdge(1, 2));
+		assertEquals(true, g.existsEdge(2, 1));
+		assertEquals(true, g.existsEdge(1, 1));
+		assertEquals(false, g.existsEdge(2, 2));
+		assertEquals(-4, g.removeEdge(2,2));
+		assertEquals(0, g.addEdge(2,2, 2.2));
+		assertEquals(2.2, g.getEdge(2,2));
+		assertEquals(true, g.existsEdge(2, 2));
+		assertEquals(0, g.removeEdge(2, 2));
+		assertEquals(-1, g.removeNode(3));
+		assertEquals(0, g.addNode(3));
+		assertEquals(-2, g.addNode(4));
+		assertEquals(-4.0, g.getEdge(1, 3));
+		assertEquals(0, g.addEdge(1, 3, 1.3));
+		assertEquals(true, g.existsEdge(1, 3));
+		assertEquals(1.3, g.getEdge(1, 3));
+		assertEquals(-2.0, g.getEdge(1, 4));
+		assertEquals(-1.0, g.getEdge(5, 1));
+		assertEquals(-3.0, g.getEdge(5, 4));
+		assertEquals(0, g.removeNode(3));
+		assertEquals(-1, g.removeNode(3));
+		assertEquals(false, g.existsEdge(1,3));
+		assertEquals(-2.0, g.getEdge(1, 3));
+		assertEquals(0, g.removeNode(2));
+		assertEquals(-1, g.removeNode(2));
+		assertEquals(true, g.existsEdge(1, 1));
+		assertEquals(0, g.removeNode(1));
+		assertEquals(false, g.existsNode(1));
+		assertEquals(false, g.existsNode(2));
+		assertEquals(false, g.existsNode(3));
+		assertEquals(false, g.existsNode(4));
+		assertEquals(0, g.addNode(4));
+		assertEquals(0, g.addNode(2));
+		assertEquals(0, g.addNode(1));
+		assertEquals(true, g.existsNode(4));
+		assertEquals(0, g.addEdge(4, 4, 4.4));
+		assertEquals(true, g.existsEdge(4,4));
+		assertEquals(4.4, g.getEdge(4,4));
+		
+		
+		
+	}
+	
+	/**
+	 * GIVEN: 	Grafo vacío
 	 * WHEN:	Aplico dijkstra sobre un grafo con nodos y aristas
 	 * THEN: 	El vector D de dijkstra coincide con el resultado correcto
 	 */

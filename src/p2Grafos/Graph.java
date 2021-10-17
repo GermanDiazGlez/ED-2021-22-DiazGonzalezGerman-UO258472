@@ -104,7 +104,7 @@ public class Graph <T>{
     	
     	if(res == 0){
     		nodes[numNodes] = node;
-    		for(int i=0; i< numNodes; i++) {
+    		for(int i=0; i<= numNodes; i++) {
     			edges[numNodes][i] = false;
     			edges[i][numNodes] = false;
             	weights[numNodes][i] = 0;
@@ -137,10 +137,12 @@ public class Graph <T>{
     * Indica si existe o no el nodo en el grafo
     */
     public boolean existsNode(T node) {
-    	for(int i=0; i<numNodes; i++){
-    		if(node.equals(nodes[i])){
-    			return true;
-    		}
+    	if(node != null) {
+        	for(int i=0; i<numNodes; i++){
+        		if(node.equals(nodes[i])){
+        			return true;
+        		}
+        	}
     	}
     	return false;
     }  
