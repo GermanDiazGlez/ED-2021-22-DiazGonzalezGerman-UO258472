@@ -240,7 +240,9 @@ public class GraphTest {
 		assertEquals(0, g.addEdge(4, 4, 4.4));
 		assertEquals(true, g.existsEdge(4,4));
 		assertEquals(4.4, g.getEdge(4,4));
-		
+		assertEquals(0, g.removeNode(4));
+		assertEquals(-1, g.removeNode(4));
+		assertEquals(false, g.existsEdge(4,4));
 		
 		
 	}

@@ -1,7 +1,6 @@
 package p2Grafos;
 
 import java.text.DecimalFormat;
-import java.util.Iterator;
 
 public class Graph <T>{   
 
@@ -65,11 +64,11 @@ public class Graph <T>{
 
 	} 
     
-    /**   
-    * Se le pasa el numero maximo de nodos del grafo   
-    */
+	/**
+	 * Se le pasa el numero maximo de nodos del grafo 
+	 * @param tam maximo de nodos del grafo
+	 */
     @SuppressWarnings("unchecked")   
-
     public Graph(int tam) {   
     	numNodes = 0;
         nodes = (T[])new Object[tam]; 
@@ -78,15 +77,12 @@ public class Graph <T>{
         
     }   
 
-    /** 
-    * Inserta un nuevo nodo que se le pasa como parámetro  
-    * si lo inserta devuelve 0.  
-    * Error 1: si ya existe, valor -1 
-    * Error 2: no cabe, valor -2,  
-    * Error 3: el nodo a insertar no es válido, valor –4 
-    * Se suman los errores en caso de que se den varios, 
-    * por ejemplo: si además de no ser válido no cabe, devuelve -6 (suma errores 2 y 3)
-    */
+    /**
+     * Metodo para insertar un nuevo nodo pasado como parametro
+     * Se suman los errores en caso de que se den varios
+     * @param node a insertar
+     * @return si lo inserta devuelve 0, si ya existe, valor -1, si no cabe, valor -2, el nodo a insertar no es valido, valor –4 
+     */
     public int addNode(T node){
     	int res = 0;
     	
@@ -119,9 +115,10 @@ public class Graph <T>{
     }
     
     /**
-    * Obtiene el índice de un nodo en el vector de nodos, y –1 si no existe
-    * ¡¡¡ OJO que no es público porque depende de la implementación !!!
-    */
+     * Metodo que obtiene el indice de un nodo en el vector de nodos
+     * @param node del que queremos saber el indice
+     * @return la posicion del nodo y -1 si no existe
+     */
     protected int getNode(T node) {
     	if(node != null) {
         	for(int i=0; i<numNodes; i++){
@@ -134,8 +131,10 @@ public class Graph <T>{
     }  
     
     /**
-    * Indica si existe o no el nodo en el grafo
-    */
+     * Metodo que indica si existe o no el nodo en el grafo
+     * @param node
+     * @return true si existe el nodo y false en caso contrario
+     */
     public boolean existsNode(T node) {
     	if(node != null) {
         	for(int i=0; i<numNodes; i++){
@@ -145,20 +144,17 @@ public class Graph <T>{
         	}
     	}
     	return false;
-    }  
+    }
     
     /**
-    * Inserta una arista con el peso indicado (> 0) entre dos nodos, uno origen y  
-    * otro destino. Si la arista existe, no la inserta. 
-    * Devuelve 0 si la inserta 
-    * Se suman los valores de los errores si se dan varios simultaneamente, 
-    *   por ejemplo si se dan errores 1 y 2 el resultado es la suma de los valores correspondientes (-3) 
-    * Error 1: No existe nodo origen, valor -1 
-    * Error 2: No existe nodo destino, valor -2 
-    * Error 3: Ya existe la arista, valor -4 
-    * Error 4: El peso no es válido, valor -8 
-    * 
-    */
+     * Metodo que inserta una arista con el peso indicado (> 0) entre dos nodos, uno origen y  
+     * otro destino. Si la arista existe, no la inserta.
+     * Se suman los valores de los errores si se dan varios simultaneamente
+     * @param source nodo origen
+     * @param target nodo destino
+     * @param edgeWeight peso de la arista
+     * @return 0 si la inserta, si no existe nodo origen, valor -1, si no existe nodo destino, valor -2, si ya existe la arista, valor -4, si el peso no es válido, valor -8.
+     */
     public int addEdge(T source, T target, double edgeWeight) {
     	int res = 0;
     	int sourcePos = getNode(source);
@@ -190,12 +186,11 @@ public class Graph <T>{
     }  
 
     /**
-    * Devuelve el peso de la arista que conecta dos nodos
-    * Se suman los valores de los errores si se dan varios simultaneamente
-    * Error 1: No existe nodo origen, valor –1,
-    * Error 2: No existe nodo destino, valor -2
-    * Error 3: No existe la arista pero sí los nodos origen y destino, valor –4
-    */
+     * Metodo que devuelve el peso de la arista que conecta dos nodos
+     * @param source nodo origen
+     * @param target nodo destino
+     * @return si no existe nodo origen, valor –1, si no existe nodo destino, valor -2, si no existe la arista pero sí los nodos origen y destino, valor –4
+     */
     public double getEdge(T source, T target) {
     	int res = 0;
     	int sourcePos = getNode(source);
@@ -223,9 +218,11 @@ public class Graph <T>{
     }  
 
     /**
-    * Comprueba si existe una arista entre dos nodos que se pasan como parámetro
-    * si alguno de los nodos no existe, no existe la arista evidentemente
-    */
+     * Comprueba si existe una arista entre dos nodos que se pasan como parámetro.
+     * @param source nodo origen
+     * @param target nodo destino
+     * @return true si existe la arista, false si no existe.
+     */
     public boolean existsEdge(T source, T target) {
     	int sourcePos = getNode(source);
     	int targetPos = getNode(target);
@@ -238,13 +235,11 @@ public class Graph <T>{
     }
     
     /**
-    * Borra la arista del grafo que conecta dos nodos
-    * Se suman los valores de los errores si se dan varios simultaneamente
-    * Error 1: No existe nodo origen, valor –1,
-    * Error 2: No existe nodo destino, valor -2
-    * Error 3: No existe la arista pero sí los nodos origen y destino, valor –4
-    * devuelve 0 si la borra
-    */  
+     * Borra la arista del grafo que conecta dos nodos
+     * @param source
+     * @param target
+     * @return si no existe nodo origen, valor –1, si no existe nodo destino, valor -2, si no existe la arista pero sí los nodos origen y destino, valor –4, 0 si la borra.
+     */
     public int removeEdge(T source, T target) {
     	int res = 0;
     	int sourcePos = getNode(source);
@@ -271,10 +266,11 @@ public class Graph <T>{
     }  
     
     /**
-    * Borra el nodo deseado del vector de nodos así como las aristas de las que
-    * forma parte, devolviendo 0 si lo hace y –1 si no lo hace
-    * En el removeNode cogemos el ultimo y lo ponemos en la posición del borrado.
-    */
+     * Borra el nodo deseado del vector de nodos así como las aristas de las que forma parte.
+     * En el removeNode cogemos el ultimo y lo ponemos en la posición del borrado.
+     * @param node a borrar
+     * @return 0 si lo hace y –1 si no lo hace
+     */
     public int removeNode(T node) {
     	int nodePos = getNode(node);
     	if(nodePos != -1) {
@@ -337,12 +333,11 @@ public class Graph <T>{
     
     
     //--------------------DIJKSTRA------------------//
-    
     /**
-    *  Algoritmo de Dijkstra para encontrar el camino de coste mínimo desde nodoOrigen
-    *  hasta el resto de nodos. Devuelve el vector D de Dijkstra
-    * Si no existe el nodoOrigen (o es inválido como parámetro) devuelve null
-    */
+     * Algoritmo de Dijkstra para encontrar el camino de coste mínimo desde nodoOrigen hasta el resto de nodos. Devuelve el vector D de Dijkstra
+     * @param nodoOrigen
+     * @return vector D de dijkstra o null si el parametro es invalido
+     */
     public double[] dijkstra(T nodoOrigen) {
     	if(nodoOrigen == null || getNode(nodoOrigen) == -1){
         	return null;
@@ -369,11 +364,12 @@ public class Graph <T>{
     }
     
     /**
-    * Busca el nodo con distancia minima en D al resto de nodos, se le pasa el vector D de dijkstra y
-    * el conjunto de visitados (como un vector de booleanos) y devuelve el indice del nodo buscado
-    * Si hay varios con mismo coste devuelve el que tenga índica más bajo en el vector de nodos
-    * o -1 si el grafo es no conexo o no quedan nodos sin visitar
-    */
+     * Busca el nodo con distancia minima en D al resto de nodos, se le pasa el vector D de dijkstra y el conjunto de visitados (como un vector de booleanos)
+     * Si hay varios con mismo coste devuelve el que tenga índica más bajo en el vector de nodos
+     * @param vectorD de dijkstra
+     * @param visited el vector de nodos visitados visitados
+     * @return el indice del nodo buscado o -1 si el grafo es no conexo o no quedan nodos sin visitar
+     */
     private int minCost(double[] vectorD, boolean[] visited) {
     	double minCost = Double.POSITIVE_INFINITY;
     	int nodePos = -1;
@@ -389,7 +385,8 @@ public class Graph <T>{
     }
     
     /**
-     * Método que inicializa la matriz D de dijkstra
+     * Metodo que inicializa el vector D de dijkstra
+     * @param node origen desde el que se inicializara el vector D
      */
 	private void initializeDijkstraD(T node) {
 		dijkstraD = new double[numNodes];
@@ -404,10 +401,11 @@ public class Graph <T>{
 			}
 		}
 	}
-	
+
 	/**
-     * Método que inicializa la matriz P de dijkstra
-     */
+	 * Metodo que inicializa el vector P de dijkstra
+	 * @param node origen desde el que se inicializara el vector P
+	 */
 	private void initializeDijkstraP(T node) {
 		dijkstraP = new int[numNodes];
 		int nodePos = getNode(node);
@@ -423,11 +421,10 @@ public class Graph <T>{
 	
 	//-----------------------Floyd---------------------------\\
 	
-	
 	/**
-	* Aplica el algoritmo de Floyd al grafo y devuelve 0 si lo aplica y genera matrices A y P;
-	* y –1 si no lo hace
-	*/
+	 * Aplica el algoritmo de Floyd al grafo y genera matrices A y P
+	 * @return 0 si lo aplica, –1 si no lo hace
+	 */
 	public int floyd() {
 		if(numNodes == 0) {
 			return -1;
@@ -446,13 +443,13 @@ public class Graph <T>{
 				}
 			}
 		}
-		//En todas las pos que no haya arista habrá un infinito
-		//En la diagonal principal habra 0
-		//Matriz P es la ruta que hay que seguir para obtener el coste minimo, se inicializa con guiones por ejemplo -1
 		return 0;
 	}  
 	
-	
+	/**
+	 * Metodo que inicializa la matriz A de floyd
+	 * @return la matriz A de floyd
+	 */
 	private double[][] inicializarAFloyd() {
 		this.aFloyd = new double[numNodes][numNodes];
 		for(int i=0; i<numNodes; i++) {
@@ -472,7 +469,10 @@ public class Graph <T>{
 		return aFloyd;
 	}
 	
-	
+	/**
+	 * Metodo que inicializa la matriz P de floyd
+	 * @return la matriz P de floyd
+	 */
 	private int[][] inicializarPFloyd() {
 		this.pFloyd = new int[numNodes][numNodes];
 		for(int i=0; i<numNodes; i++) {
@@ -483,11 +483,10 @@ public class Graph <T>{
 		return pFloyd;
 	}
 	
-	
 	/**
-	* Devuelve la matriz A de Floyd, con infinito si no hay camino
-	* Si no se ha invocado a Floyd debe devolver null  (OJO que no lo invoca)
-	*/
+	 * Devuelve la matriz A de Floyd, con infinito si no hay camino
+	 * @return la matriz A de floyd, null si no se ha invocado a Floyd
+	 */
 	protected double[][] getAFloyd() { 
 		if(aFloyd == null) {
 			return null;
@@ -496,10 +495,11 @@ public class Graph <T>{
 	} 
 	
 	
+
 	/**
-	* Devuelve la matriz P de Floyd, con -1 en las posiciones en las que no hay nodo intermedio
-	* Si no se ha invocado a Floyd debe devolver null  (OJO que no lo invoca)
-	*/
+	 * Devuelve la matriz P de Floyd, con -1 en las posiciones en las que no hay nodo intermedio
+	 * @return la matriz P de floyd, null si no se ha invocado a Floyd
+	 */
 	protected int[][] getPFloyd() {
 		if(pFloyd == null) {
 			return null;
@@ -507,12 +507,13 @@ public class Graph <T>{
 		return pFloyd;
 	}
 	
-	
 	/**
-	* Devuelve el coste del camino de coste mínimo entre origen y destino según Floyd
-	* Si no están generadas las matrices de Floyd, las genera.
-	* Si no puede obtener el valor por alguna razón, devuelve –1 (OJO que es distinto de infinito)
-	**/
+	 * Devuelve el coste del camino de coste mínimo entre origen y destino según Floyd
+	 * Si no están generadas las matrices de Floyd, las genera.
+	 * @param nodeInicial
+	 * @param nodeFinal
+	 * @return el coste del camino mínimo desde el nodeIncial al nodeFinal, -1 si no puede obtener el valor
+	 */
 	public double minCostPath(T nodeInicial, T nodeFinal) {
 		if(pFloyd == null) {
 			inicializarPFloyd();
