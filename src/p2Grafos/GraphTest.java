@@ -24,7 +24,7 @@ public class GraphTest {
 		assertEquals(0, g.addNode(5));
 		assertEquals(-2, g.addNode(7));
 		assertEquals(-3, g.addNode(6));
-		//getNode
+
 		assertEquals(0, g.getNode(1));
 		assertEquals(1, g.getNode(3));
 		assertEquals(2, g.getNode(6));
@@ -38,7 +38,7 @@ public class GraphTest {
 		assertEquals(true, g.existsNode(5));
 		assertEquals(false, g.existsNode(0));
 		assertEquals(false, g.existsNode(7));
-		//addEdge
+
 		assertEquals(0, g.addEdge(1, 3, 2.0));
 		assertEquals(0, g.addEdge(3, 6, 4.5));
 		assertEquals(0, g.addEdge(1, 5, 11.11));
@@ -51,13 +51,13 @@ public class GraphTest {
 		assertEquals(-4, g.addEdge(1, 3, 7.77));
 		assertEquals(-11, g.addEdge(2, 4, -2));
 		assertEquals(11.11, g.getEdge(1, 5));
-		//existEdge
+
 		assertEquals(true, g.existsEdge(1, 3));
 		assertEquals(true, g.existsEdge(1, 5));
 		assertEquals(false, g.existsEdge(4, 5));
 		assertEquals(false, g.existsEdge(9, 24));
 		assertEquals(false, g.existsEdge(-9, 24));
-		//getEdge
+		
 		assertEquals(2.0, g.getEdge(1, 3));
 		assertEquals(4.5, g.getEdge(3, 6));
 		assertEquals(-1, g.getEdge(4, 6));
@@ -65,7 +65,7 @@ public class GraphTest {
 		assertEquals(-3, g.getEdge(4, 8));
 		assertEquals(-4, g.getEdge(1, 6));
 		assertEquals(-3, g.getEdge(2, 4));
-		//removeEdge
+
 		assertEquals(0, g.removeEdge(1, 3));
 		assertEquals(-4, g.removeEdge(1, 3));
 		assertEquals(0, g.removeEdge(3, 6));
@@ -75,7 +75,7 @@ public class GraphTest {
 		assertEquals(-3, g.removeEdge(7, 9));
 		assertEquals(-4, g.removeEdge(1, 1));
 		assertEquals(-3, g.removeEdge(7, 7));
-		//removeNode
+
 		assertEquals(-1, g.removeNode(7));
 		assertEquals(0, g.addEdge(1, 3, 2));
 		assertEquals(0, g.addEdge(3, 6, 4));
@@ -89,16 +89,13 @@ public class GraphTest {
 		assertEquals(0, g.removeNode(3));
 		assertEquals(0, g.addNode(3));
 		assertEquals(0, g.addEdge(1, 3, 2));
-		//Probamos a borrar el de la ultima posicion
+
 		assertEquals(0, g.removeNode(3));
 		assertEquals(0, g.addNode(3));
 		assertEquals(0, g.addEdge(1, 3, 2));
-		//Probamos a borrar el de la primera posicion
 		assertEquals(0, g.removeNode(5));
 		assertEquals(0, g.removeNode(3));
-		//Borramos cuando solo queda 1 nodo
 		assertEquals(0, g.removeNode(1));
-		//Borramos cuando no quedan nodos
 		assertEquals(-1, g.removeNode(0));
 	}
 	
@@ -248,7 +245,7 @@ public class GraphTest {
 	}
 	
 	/**
-	 * GIVEN: 	Grafo vacío
+	 * GIVEN: 	Grafo lleno
 	 * WHEN:	Aplico dijkstra sobre un grafo con nodos y aristas
 	 * THEN: 	El vector D de dijkstra coincide con el resultado correcto
 	 */
@@ -281,7 +278,45 @@ public class GraphTest {
 	}
 	
 	/**
-	 * GIVEN: 	Grafo vacío
+	 * GIVEN: 	Grafo vacio
+	 * WHEN:	Aplico dijkstra sobre un grafo vacio
+	 * THEN: 	Devuelve null
+	 */
+	@Test
+	public void testDijkstraEmpty() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(null, g.dijkstra("V1"));
+	}
+	
+	/**
+	 * GIVEN: 	Grafo con varios nodos y uno borrado
+	 * WHEN:	Aplico dijkstra sobre un nodo que ha sido borrado
+	 * THEN: 	Devuelve null
+	 */
+	@Test
+	public void testDijkstraRemovedNode() {
+		Graph<Integer> g = new Graph<>(3);
+		assertEquals(0,g.addNode(1));
+		assertEquals(0,g.addNode(2));
+		assertEquals(0,g.addNode(3));
+		assertEquals(0,g.removeNode(1));
+		assertEquals(null, g.dijkstra(1));
+	}
+	
+	/**
+	 * GIVEN: 	Grafo con un nodo
+	 * WHEN:	Aplico dijkstra sobre un nodo que no existe
+	 * THEN: 	Devuelve null
+	 */
+	@Test
+	public void testDijkstraNullNode() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("A"));
+		assertEquals(null, g.dijkstra("V1"));
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
 	 * WHEN:	Aplico dijkstra sobre un grafo con nodos y aristas
 	 * THEN: 	El vector D de dijkstra coincide con el resultado correcto
 	 */
@@ -318,7 +353,7 @@ public class GraphTest {
 	}
 	
 	/**
-	 * GIVEN: 	Grafo vacío
+	 * GIVEN: 	Grafo lleno
 	 * WHEN:	Aplico dijkstra sobre un grafo con nodos y aristas
 	 * THEN: 	El vector D de dijkstra coincide con el resultado correcto
 	 */
@@ -357,9 +392,10 @@ public class GraphTest {
 		assertEquals(10,w[5]);
 		
 	}
+
 	
 	/**
-	 * GIVEN: 	Grafo vacío
+	 * GIVEN: 	Grafo lleno
 	 * WHEN:	Borro o añado nodos o aristas
 	 * THEN: 	Las matrices de floyd quedan anuladas
 	 */
@@ -385,45 +421,73 @@ public class GraphTest {
 		assertEquals(0,g.addEdge("V6", "V4", 2));
 		
 		assertEquals(0, g.floyd());
-		
-		//Borramos un nodo para comprobar que las matrices A y P de floyd quedan anuladas
+
+
 		assertEquals(0,g.removeNode("V5"));
 		assertEquals(null, g.getAFloyd());
 		assertEquals(null, g.getPFloyd());
-		
-		//Repetimos el proceso para probar otra vez
+
+
 		assertEquals(0, g.floyd());
 		assertNotNull(g.getAFloyd());
 		assertNotNull(g.getPFloyd());
 
-		//Borramos una arista para comprobar que las matrices A y P de floyd quedan anuladas
+
 		assertEquals(0, g.removeEdge("V1", "V3"));
 		assertEquals(null, g.getAFloyd());
 		assertEquals(null, g.getPFloyd());
 
-		//Repetimos el proceso para probar otra vez
+
 		assertEquals(0, g.floyd());
 		assertNotNull(g.getAFloyd());
 		assertNotNull(g.getPFloyd());
-		
-		//Añadimos un nodo para comprobar que las matrices A y P de floyd quedan anuladas
+
+
 		assertEquals(0, g.addNode("V9"));
 		assertEquals(null, g.getAFloyd());
 		assertEquals(null, g.getPFloyd());
-		
-		//Repetimos el proceso para probar otra vez
+
+
 		assertEquals(0, g.floyd());
 		assertNotNull(g.getAFloyd());
 		assertNotNull(g.getPFloyd());
-		
-		//Añadimos una arista para comprobar que las matrices A y P de floyd quedan anuladas
+
+
 		assertEquals(0, g.addEdge("V9", "V1", 3.33));
 		assertEquals(null, g.getAFloyd());
 		assertEquals(null, g.getPFloyd());
 	}
 	
 	/**
-	 * GIVEN: 	Grafo vacío
+	 * GIVEN: 	Grafo vacio
+	 * WHEN:	Aplico floyd sobre un grafo vacio
+	 * THEN: 	Floyd devuelve -1
+	 */
+	@Test
+	public void testFloydEmpty() {
+		Graph<Integer> g = new Graph<>(5);
+		assertEquals(-1, g.floyd());
+		assertEquals(null, g.getAFloyd());
+		assertEquals(null, g.getPFloyd());
+	}
+	
+	/**
+	 * GIVEN: 	Grafo con un solo nodo
+	 * WHEN:	Aplico floyd sobre un grafo vacio con un nodo
+	 * THEN: 	Floyd devuelve ese nodo en la matriz P y el coste de ir de el a si mismo (0.0) en la matriz A
+	 */
+	@Test
+	public void testFloydWith1NodeGraph() {
+		Graph<Integer> g = new Graph<>(5);
+		assertEquals(0, g.addNode(1));
+		assertEquals(0, g.floyd());
+		assertEquals(0.0, g.aFloyd[0][0]);
+		assertEquals(-1, g.pFloyd[0][0]);
+		
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
 	 * WHEN:	Aplico floyd sobre un grafo con nodos y aristas
 	 * THEN: 	Las matrices de floyd contienen los valores correctos
 	 */
@@ -452,7 +516,7 @@ public class GraphTest {
 	}
 	
 	/**
-	 * GIVEN: 	Grafo vacío
+	 * GIVEN: 	Grafo lleno
 	 * WHEN:	Aplico floyd sobre un grafo con nodos y aristas
 	 * THEN: 	Las matrices de floyd contienen los valores correctos
 	 */

@@ -532,9 +532,85 @@ public class Graph <T>{
 		return coste;
 	}
 	
+	/**
+	 * Metodo que indica el camino entre los nodos que se le pasan como parámetros en un String de esta forma:  
+	 * Origen<tab>(coste0)<tab>Intermedio1<tab>(coste1)….IntermedioN<tab>(costeN)<tab>Destino<tab>
+	 * @param origen nodoOrigen
+	 * @param destino nodoDestino
+	 * @return Si no hay camino: Origen<tab>(Infinity)<tab>Destino<tab>, si Origen y Destino coinciden: Origen<tab>, si no existen los 2 nodos, una cadena vacía
+	 */
+	public String path(T origen, T destino) {
+		if(pFloyd == null) {
+			inicializarPFloyd();
+		}
+		if(aFloyd == null) {
+			inicializarAFloyd();
+		}
+		int floyd = floyd(); //¿Debe llamar a floyd si las matrices P o A son null?
+		if(floyd != 0) {
+			return "Error en floyd";
+		}
+		
+		int origenPos = getNode(origen);
+		int destinoPos = getNode(destino);
+		
+		String res = "";
+		if(origenPos == -1 || destinoPos == -1) {
+			return res;
+		}
+		if(origenPos == destinoPos) {
+			return nodes[origenPos] + "\t";
+		}
+		if(minCostPath(origen, destino) == -1) {
+			return nodes[origenPos] + "\t" + Double.POSITIVE_INFINITY + "\t" + nodes[destinoPos] + "\t";
+		}
+		res += nodes[origenPos] + "\t";
+		res += pathIntermedio(origenPos, destinoPos);
+		res += nodes[destinoPos] + "\t";
+		return res;
+	}
+	
+	/**
+	 * Metodo privado que recorre recursivamente un camino para devolver un String con los nodos de dicho camino
+	 * @param origenPos
+	 * @param destinoPos
+	 * @return
+	 */
+	private String pathIntermedio(int origenPos, int destinoPos) {
+		String cad = "";
+		int nodoIntermedio = (int) new Object();
+		nodoIntermedio = pFloyd[origenPos][destinoPos];
+		if(nodoIntermedio != -1) {
+			if(origenPos != nodoIntermedio) {
+				pathIntermedio(origenPos, nodoIntermedio);
+				cad += aFloyd[origenPos][nodoIntermedio] + "\t" + nodes[nodoIntermedio] + "\t" ;
+				if(nodoIntermedio != destinoPos) {
+					pathIntermedio(nodoIntermedio, destinoPos);
+				}
+			}
+		} else {
+			cad += Double.POSITIVE_INFINITY + "\t";
+		}
+		return cad;
+	}
+	
 	//A partir de un nodo recorrer en profundidad hasta donde se llegue. 
 	//Empezando por el que se encuentra en posicion mas baja en el vector de nodos.
 	//Siempre que se haga un tostring de un nodo se mete un \t detras
+	
+	/**
+	* Lanza el recorrido en profundidad de un grafo desde un nodo determinado,  
+	* No necesariamente recorre todos los nodos.  
+	* Al recorrer cada nodo añade el toString del nodo y un tabulador  
+	* Se puede usar un método privado recursivo...  
+	* Se recorren vecinos empezando por el principio del vector de nodos (antes índices bajos) 
+	* Si no existe el nodo devuelve una cadena vacia  
+	*/  
+	
+	public String recorridoProfundidad(T origen) {
+		
+	} 
+	
 	
 	
 	/**
