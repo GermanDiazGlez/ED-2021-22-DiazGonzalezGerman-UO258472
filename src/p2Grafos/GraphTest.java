@@ -541,5 +541,363 @@ public class GraphTest {
 		System.out.println(g.toString());
 		
 	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Aplico el path sobre un grafo con nodos y aristas desde el nodo V1 al nodo V4
+	 * THEN: 	Devuelve el camino esperado y los pesos esperados
+	 */
+	@Test
+	public void testFloydPath() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String path = g.path("V1", "V4");
+		System.out.println("Ejercicio teoria 1");
+		System.out.println(path);
+		assertEquals("V1\t4.0\tV3\t3.0\tV5\t3.0\tV6\t2.0\tV4\t", path);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Aplico el path sobre un grafo con nodos y aristas desde el nodo V1 al nodo V5
+	 * THEN: 	Devuelve el camino esperado y los pesos esperados
+	 */
+	@Test
+	public void testFloydPath2() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String path = g.path("V1", "V5");
+		System.out.println("Ejercicio teoria 1");
+		System.out.println(path);
+		assertEquals("V1\t4.0\tV3\t3.0\tV5\t", path);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Aplico el path sobre un grafo con nodos y aristas desde el nodo V1 al nodo V2
+	 * THEN: 	Devuelve el camino esperado y los pesos esperados
+	 */
+	@Test
+	public void testFloydPath3() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String path = g.path("V1", "V2");
+		System.out.println("Ejercicio teoria 1");
+		System.out.println(path);
+		assertEquals("V1\t3.0\tV2\t", path);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Aplico el path sobre un grafo con nodos y aristas desde el nodo V4 al nodo V1
+	 * THEN: 	Devuelve que no hay camino
+	 */
+	@Test
+	public void testFloydPath4() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String path = g.path("V4", "V1");
+		System.out.println("Ejercicio teoria 1");
+		System.out.println(path);
+		assertEquals("V4\tInfinity\tV1\t", path);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Aplico el path sobre un grafo con nodos y aristas desde el nodo V1 al nodo V3
+	 * THEN: 	Devuelve el camino esperado y los pesos esperados
+	 */
+	@Test
+	public void testFloydPath5() {
+		Graph<String> g = new Graph<>(5);
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addEdge("V1", "V2", 1));
+		assertEquals(0,g.addEdge("V1", "V4", 3));
+		assertEquals(0,g.addEdge("V1", "V5", 10));
+		assertEquals(0,g.addEdge("V2", "V3", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 1));
+		assertEquals(0,g.addEdge("V4", "V3", 2));
+		assertEquals(0,g.addEdge("V4", "V5", 6));
+		String path = g.path("V1", "V3");
+		System.out.println("Ejercicio teoria 2");
+		System.out.println(path);
+		assertEquals("V1\t3.0\tV4\t2.0\tV3\t", path);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Aplico el path sobre un grafo con nodos y aristas desde el nodo V2 al nodo V5
+	 * THEN: 	Devuelve el camino esperado y los pesos esperados
+	 */
+	@Test
+	public void testFloydPath6() {
+		Graph<String> g = new Graph<>(5);
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addEdge("V1", "V2", 1));
+		assertEquals(0,g.addEdge("V1", "V4", 3));
+		assertEquals(0,g.addEdge("V1", "V5", 10));
+		assertEquals(0,g.addEdge("V2", "V3", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 1));
+		assertEquals(0,g.addEdge("V4", "V3", 2));
+		assertEquals(0,g.addEdge("V4", "V5", 6));
+		String path = g.path("V2", "V5");
+		System.out.println("Ejercicio teoria 2");
+		System.out.println(path);
+		assertEquals("V2\t5.0\tV3\t1.0\tV5\t", path);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Aplico el path sobre un grafo con nodos y aristas desde el nodo V5 al nodo V2
+	 * THEN: 	Devuelve que no hay camino
+	 */
+	@Test
+	public void testFloydPath7() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String path = g.path("V5", "V2");
+		System.out.println("Ejercicio teoria 2");
+		System.out.println(path);
+		assertEquals("V5\tInfinity\tV2\t", path);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo vacio
+	 * WHEN:	Aplico el path sobre un grafo vacio sobre dos nodos que no existen
+	 * THEN: 	Devuelve cadena vacia
+	 */
+	@Test
+	public void testFloydPath8() {
+		Graph<String> g = new Graph<>(6);
+		String path = g.path("V5", "V2");
+		assertEquals("", path);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Pruebo el recorrido en profundidad desde el nodo V1
+	 * THEN: 	El metodo devuelve el camino correcto
+	 */
+	@Test
+	public void testRecorridoProfundidad1() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String resultadoProfundidad = g.recorridoProfundidad("V1");
+		assertEquals("V1\tV2\tV5\tV4\tV6\tV3\t", resultadoProfundidad);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Pruebo el recorrido en profundidad desde el nodo V1
+	 * THEN: 	El metodo devuelve el camino correcto
+	 */
+	@Test
+	public void testRecorridoProfundidad2() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String resultadoProfundidad = g.recorridoProfundidad("V1");
+		assertEquals("V1\tV5\tV6\tV4\tV3\tV2\t", resultadoProfundidad);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Pruebo el recorrido en profundidad desde el nodo V6
+	 * THEN: 	El metodo devuelve el camino correcto
+	 */
+	@Test
+	public void testRecorridoProfundidad3() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String resultadoProfundidad = g.recorridoProfundidad("V6");
+		assertEquals("V6\tV4\t", resultadoProfundidad);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Pruebo el recorrido en profundidad desde el nodo V6
+	 * THEN: 	El metodo devuelve el camino correcto
+	 */
+	@Test
+	public void testRecorridoProfundidad4() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String resultadoProfundidad = g.recorridoProfundidad("V6");
+		assertEquals("V6\tV4\t", resultadoProfundidad);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo vacio
+	 * WHEN:	Pruebo el recorrido en profundidad desde un nodo que no existe
+	 * THEN: 	El metodo devuelve cadena vacía
+	 */
+	@Test
+	public void testRecorridoProfundidadVacio1() {
+		Graph<String> g = new Graph<>(6);
+		String resultadoProfundidad = g.recorridoProfundidad("V1");
+		assertEquals("", resultadoProfundidad);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo lleno
+	 * WHEN:	Pruebo el recorrido en profundidad desde un nodo que no existe
+	 * THEN: 	El metodo devuelve cadena vacía
+	 */
+	@Test
+	public void testRecorridoProfundidadVacio2() {
+		Graph<String> g = new Graph<>(6);
+		assertEquals(0,g.addNode("V6"));
+		assertEquals(0,g.addNode("V5"));
+		assertEquals(0,g.addNode("V4"));
+		assertEquals(0,g.addNode("V3"));
+		assertEquals(0,g.addNode("V2"));
+		assertEquals(0,g.addNode("V1"));
+		assertEquals(0,g.addEdge("V1", "V2", 3));
+		assertEquals(0,g.addEdge("V1", "V3", 4));
+		assertEquals(0,g.addEdge("V1", "V5", 8));
+		assertEquals(0,g.addEdge("V2", "V5", 5));
+		assertEquals(0,g.addEdge("V3", "V5", 3));
+		assertEquals(0,g.addEdge("V5", "V4", 7));
+		assertEquals(0,g.addEdge("V5", "V6", 3));
+		assertEquals(0,g.addEdge("V6", "V4", 2));
+		String resultadoProfundidad = g.recorridoProfundidad("V9");
+		assertEquals("", resultadoProfundidad);
+	}
+	
+	/**
+	 * GIVEN: 	Grafo vacio
+	 * WHEN:	Pruebo el recorrido en profundidad desde un nodo null
+	 * THEN: 	El metodo devuelve cadena vacía
+	 */
+	@Test
+	public void testRecorridoProfundidadVacio3() {
+		Graph<String> g = new Graph<>(6);
+		String resultadoProfundidad = g.recorridoProfundidad(null);
+		assertEquals("", resultadoProfundidad);
+	}
 
 }

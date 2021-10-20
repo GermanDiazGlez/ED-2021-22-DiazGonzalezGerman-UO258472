@@ -8,8 +8,9 @@ public class Graph <T>{
     protected boolean[][] edges; // matriz de aristas
     protected double[][] weights; // matriz de pesos
     protected int numNodes; // número de elementos en un momento dado
-    
-    
+    protected boolean[] visited;
+    protected String recorridoProfundidad;
+    protected String pathIntermedioStr;
     
     protected boolean[] dijkstraS;
     
@@ -548,7 +549,7 @@ public class Graph <T>{
 		}
 		int floyd = floyd(); //¿Debe llamar a floyd si las matrices P o A son null?
 		if(floyd != 0) {
-			return "Error en floyd";
+			return "";
 		}
 		
 		int origenPos = getNode(origen);
@@ -577,21 +578,19 @@ public class Graph <T>{
 	 * @return
 	 */
 	private String pathIntermedio(int origenPos, int destinoPos) {
-		String cad = "";
-		int nodoIntermedio = (int) new Object();
-		nodoIntermedio = pFloyd[origenPos][destinoPos];
-		if(nodoIntermedio != -1) {
-			if(origenPos != nodoIntermedio) {
-				pathIntermedio(origenPos, nodoIntermedio);
-				cad += aFloyd[origenPos][nodoIntermedio] + "\t" + nodes[nodoIntermedio] + "\t" ;
-				if(nodoIntermedio != destinoPos) {
-					pathIntermedio(nodoIntermedio, destinoPos);
-				}
+		pathIntermedioStr = "";
+		int nodoIntermedioPos = -1;
+		nodoIntermedioPos = pFloyd[origenPos][destinoPos]-1;
+		if(nodoIntermedioPos >= 0) {
+			if(origenPos != nodoIntermedioPos) {
+				pathIntermedio(origenPos, nodoIntermedioPos);
+				pathIntermedioStr += nodes[nodoIntermedioPos] + "\t" + aFloyd[nodoIntermedioPos][destinoPos] + "\t";
+				
 			}
 		} else {
-			cad += Double.POSITIVE_INFINITY + "\t";
+			pathIntermedioStr += aFloyd[origenPos][destinoPos] + "\t";
 		}
-		return cad;
+		return pathIntermedioStr;
 	}
 	
 	//A partir de un nodo recorrer en profundidad hasta donde se llegue. 
@@ -608,8 +607,26 @@ public class Graph <T>{
 	*/  
 	
 	public String recorridoProfundidad(T origen) {
-		
-	} 
+		recorridoProfundidad = "";
+		this.visited = new boolean[numNodes];
+		int origenPos = getNode(origen);
+		if(origenPos == -1) {
+			return recorridoProfundidad;
+		}
+		recorridoProfundidadRec(origen);
+		return recorridoProfundidad;
+	}
+	
+	private void recorridoProfundidadRec(T node) {
+		int nodePos = getNode(node);
+		this.visited[nodePos] = true;
+		recorridoProfundidad += node.toString() + "\t";
+		for(int i=0; i<numNodes; i++) {
+			if(!this.visited[i] && this.edges[nodePos][i]) {
+				recorridoProfundidadRec(this.nodes[i]);
+			}
+		}
+	}
 	
 	
 	
